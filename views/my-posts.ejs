@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Posts</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container py-5">
+        <h1 class="mb-4 text-center">My Posts</h1>
+        <div class="row">
+            <% posts.forEach(post => { %>
+            <div class="col-lg-8 mx-auto">
+                <div class="card shadow mb-4">
+                    <div class="card-body p-5">
+                        <h2 class="mb-4"><%= post.title %></h2>
+                        <p><%= post.content %></p>
+                        <small class="d-block text-muted mb-4">Created at: <%= post.createdAt %></small>
+    
+                        <a href="/my-posts/<%= post.id %>/edit" class="btn btn-warning">Edit</a>
+                        <form action="/my-posts/<%= post.id %>/delete" method="POST" style="display:inline;">
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <% }) %>
+        </div>
+    </div>
+    
+</body>
+</html>

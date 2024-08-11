@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Comment</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container py-5">
+        <h1 class="mb-4 text-center">Edit Comment</h1>
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="card shadow mb-4">
+                    <div class="card-body p-5">
+                        <form action="/my-comments/<%= comment.id %>" method="POST">
+                            <div class="form-group">
+                                <label for="content">Content</label>
+                                <textarea id="content" name="content" class="form-control" rows="5" required><%= comment.content %></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Update Comment</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

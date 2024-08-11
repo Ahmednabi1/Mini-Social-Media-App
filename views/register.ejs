@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Auth App - Login</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.4.1/css/simple-line-icons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <div class="form-style">
+        <h1 class="title">Register</h1>
+        <form action="/auth/register" method="post">
+            <div class="form-icon">
+                <span><i class="icon icon-user"></i></span>
+            </div>
+
+            <div class="form-group">
+                <input type="text" name="name" class="form-control item" id="username" placeholder="Username"  required>
+            </div>
+            <div class="form-group">
+                <input type="email" name="email" class="form-control item" id="email" placeholder="Email" required>
+            </div>
+            
+            <div class="form-group">
+                <input type="password" name="password" class="form-control item" id="password" placeholder="Password" required>
+            </div>
+            <div class="form-group">
+                <input type="text" name="address" class="form-control item" id="address" placeholder="address" required>
+            </div>
+            <div class="form-group">
+                <input type="text" name="phone" class="form-control item" id="phone-number" placeholder="Phone Number"  required>
+            </div>
+            
+            <div class="form-group">
+                <input type="number" name= "age" class="form-control item" id="age" placeholder="Age" required>
+            </div>
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-block create-account">Register</button>
+            </div>
+
+            <p>Already have an account? <a href="/auth/login">Login here</a></p>
+        </form>
+    </div>
+</body>
+</html>
+
+
