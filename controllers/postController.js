@@ -104,3 +104,29 @@ exports.getPostDetails = async (req, res) => {
         res.status(500).send('Internal Server Error');
     }
 };
+
+exports.getPaginatedPosts = async (req, res) => {
+    const page = parseInt(req.query.page) || 1; // Current page
+    const limit = parseInt(req.query.limit) || 10; // Number of posts per page
+
+    try {
+        const { count, rows } = await Post.findAndCountAll({
+            include: [
+                { model: User, attributes: ['name'] },
+                { model: Comment, include: [{ model: User, attributes: ['name'] }] }
+            ],
+            limit: limit,
+            offset: (page - 1) * limit,
+            order: [['createdAt', 'DESC']]
+        });
+
+        res.render('post/index', {
+            posts: rows,
+            currentPage: page,
+            totalPages: Math.ceil(count / limit)
+        });
+    } catch (error) {
+        console.error('Error fetching paginated posts:', error);
+        res.status(500).send('Internal Server Error');
+    }
+};

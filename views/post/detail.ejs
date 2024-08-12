@@ -18,7 +18,7 @@
                     <div class="card-body p-5">
                         <h1 class="mb-4"><%= post.title %></h1>
                         <p class="mb-4"><%= post.content %></p>
-                        <small class="d-block text-muted mb-2">Created by: <%= post.name %></small>
+                        <small class="d-block text-muted mb-2">Created by: <%= post.User ? post.User.name : 'Unknown' %></small>
                         <small class="d-block text-muted mb-4">Created at: <%= post.createdAt %></small>
 
                         <h2 class="mb-4">Comments</h2>
@@ -26,14 +26,24 @@
                             <% if (post.Comments.length > 0) { %>
                                 <% post.Comments.forEach(comment => { %>
                                     <li class="list-group-item">
-                                        <p><%= comment.content %></p>
-                                        <small class="text-muted">Commented by <%= comment.User.name %> at <%= comment.createdAt %></small>
+                                        <p><strong><%= comment.User ? comment.User.name : 'Anonymous' %>:</strong> <%= comment.content %></p>
                                     </li>
                                 <% }) %>
                             <% } else { %>
                                 <li class="list-group-item">No comments yet.</li>
                             <% } %>
                         </ul>
+
+                        <!-- Pagination Controls for Comments -->
+                        <div class="text-center mt-4">
+                            <% if (currentCommentPage > 1) { %>
+                                <a href="?commentPage=<%= currentCommentPage - 1 %>" class="btn btn-outline-primary">Previous Comments</a>
+                            <% } %>
+
+                            <% if (currentCommentPage < totalCommentPages) { %>
+                                <a href="?commentPage=<%= currentCommentPage + 1 %>" class="btn btn-outline-primary">Next Comments</a>
+                            <% } %>
+                        </div>
 
                         <h3 class="mb-4">Add a Comment</h3>
                         <form action="/posts/<%= post.id %>/comments" method="POST">
