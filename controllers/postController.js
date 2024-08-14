@@ -1,3 +1,5 @@
+// postController.js
+
 const Post = require('../models/post');
 const User = require('../models/user'); 
 const Comment = require('../models/comment');
@@ -5,14 +7,13 @@ const Comment = require('../models/comment');
 exports.createPost = async (req, res) => {
     try {
         const { title, content } = req.body;
-        const userId = req.session.userId; 
-        console.log("Session UserId:", req.session.userId);
+        const userId = req.session.userId;
         if (!userId) {
             req.flash('error_msg', 'You need to log in to create a post.');
             return res.redirect('/auth/login');
         }
 
-        const newPost = await Post.create({
+        await Post.create({
             title,
             content,
             UserId: userId 
@@ -26,71 +27,96 @@ exports.createPost = async (req, res) => {
     }
 };
 
-
-
-
 exports.addComment = async (req, res) => {
-    console.log("Session UserId:", req.session.userId);
-    console.log("Comment Data:", req.body);
-    console.log("Post ID:", req.params.id);
-    console.log("User ID:", req.session.userId);
+    const userId = req.session.userId;
+    const { content } = req.body; 
+    const postId = req.params.id;
 
-    if (!req.session.userId) {
+    if (!userId) {
         req.flash('error_msg', 'You need to log in to access this page.');
         return res.redirect('/auth/login');
     }
 
     try {
-        const { content } = req.body; 
-        const postId = req.params.id;
-        const userId = req.session.userId;
-
         if (!content) {
             req.flash('error_msg', 'Comment content cannot be empty.');
             return res.redirect(`/posts/${postId}`);
         }
 
         await Comment.create({
-            content: content,
+            content,
             UserId: userId,
             PostId: postId
         });
 
-        console.log('Comment created with content:', content, 'for post ID:', postId);
-        res.redirect('/posts');
+        res.redirect(`/posts/${postId}`);
     } catch (error) {
         console.error('Error adding comment:', error);
         req.flash('error_msg', 'An error occurred while adding the comment.');
         res.status(500).send('Internal Server Error');
     }
 };
+
 exports.getPosts = async (req, res) => {
+    const postsPerPage = 5;
+    const commentsPerPage = 3;
+    const page = parseInt(req.query.page) || 1;
+    const commentPage = parseInt(req.query.commentPage) || 1;
+    const offset = (page - 1) * postsPerPage;
+
     try {
-        const posts = await Post.findAll({
+        const { count, rows: posts } = await Post.findAndCountAll({
+            limit: postsPerPage,
+            offset,
             include: [
+                User,
                 {
                     model: Comment,
-                    include: [User] 
+                    include: [User],
+                    limit: commentsPerPage,
+                    offset: (commentPage - 1) * commentsPerPage,
                 },
-                User 
             ],
             order: [['createdAt', 'DESC']],
         });
-        
-        res.render('post/list', { posts });
+
+        const totalPages = Math.ceil(count / postsPerPage);
+        const commentPages = await Promise.all(
+            posts.map(async post => {
+                const commentCount = await Comment.count({ where: { PostId: post.id } });
+                return Math.ceil(commentCount / commentsPerPage);
+            })
+        );
+
+        res.render('post/list', {
+            posts,
+            currentPage: page,
+            totalPages,
+            currentCommentPage: commentPage,
+            commentPages,
+        });
     } catch (error) {
         console.error('Error fetching posts:', error);
-        res.status(500).send('Internal Server Error');
+        res.status(500).send('Server error');
     }
 };
 
-
 exports.getPostDetails = async (req, res) => {
     const postId = req.params.id;
+    const commentsPerPage = 5;
+    const commentPage = parseInt(req.query.commentPage) || 1;
+    const commentOffset = (commentPage - 1) * commentsPerPage;
+
     try {
-        const post = await Post.findByPk(req.params.id, {
+        const post = await Post.findByPk(postId, {
             include: [
-                { model: Comment, include: [User] } 
+                User,
+                {
+                    model: Comment,
+                    include: [User],
+                    limit: commentsPerPage,
+                    offset: commentOffset
+                }
             ]
         });
 
@@ -98,35 +124,17 @@ exports.getPostDetails = async (req, res) => {
             return res.status(404).send('Post not found');
         }
 
-        res.render('post/detail', { post, comments: post.Comments, user: req.session.user });
+        const totalComments = await Comment.count({ where: { PostId: postId } });
+        const totalCommentPages = Math.ceil(totalComments / commentsPerPage);
+
+        res.render('post/detail', { 
+            post, 
+            currentCommentPage: commentPage, 
+            totalCommentPages,
+            commentsPerPage 
+        });
     } catch (error) {
         console.error('Error fetching post details:', error);
-        res.status(500).send('Internal Server Error');
-    }
-};
-
-exports.getPaginatedPosts = async (req, res) => {
-    const page = parseInt(req.query.page) || 1; // Current page
-    const limit = parseInt(req.query.limit) || 10; // Number of posts per page
-
-    try {
-        const { count, rows } = await Post.findAndCountAll({
-            include: [
-                { model: User, attributes: ['name'] },
-                { model: Comment, include: [{ model: User, attributes: ['name'] }] }
-            ],
-            limit: limit,
-            offset: (page - 1) * limit,
-            order: [['createdAt', 'DESC']]
-        });
-
-        res.render('post/index', {
-            posts: rows,
-            currentPage: page,
-            totalPages: Math.ceil(count / limit)
-        });
-    } catch (error) {
-        console.error('Error fetching paginated posts:', error);
-        res.status(500).send('Internal Server Error');
+        res.status(500).send('Server error');
     }
 };

@@ -1,72 +1,93 @@
-body{
-    background-color: #dee9ff;
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    position: relative;
 }
 
-.form-style{
-	padding: 50px 0;
-}
-
-.form-style form{
-    background-color: #fff;
-    max-width: 600px;
-    margin: auto;
-    padding: 50px 70px;
-    border-radius: 30px;
-    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.5);
-}
-
-.form-style .form-icon{
-	text-align: center;
-    background-color: #5891ff;
-    border-radius: 50%;
-    font-size: 35px;
-    color: white;
-    width: 80px;
-    height: 80px;
-    margin: auto;
-    margin-bottom: 50px;
-    line-height: 80px;
-}
-
-.form-style .item{
-	border-radius: 20px;
-    margin-bottom: 25px;
-    padding: 10px 20px;
-}
-
-.form-style .create-account{
-    border-radius: 30px;
-    padding: 10px 20px;
-    font-size: 18px;
-    font-weight: bold;
-    background-color: #5791ff;
-    border: none;
-    color: white;
-    margin-top: 20px;
-}
-.title{
-    font-size: 30px;
-    font-weight: bold;
-    margin-bottom: 20px;
+.alert {
+    position: absolute;
+    top: 2px; 
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
     text-align: center;
+    margin-bottom: 200px;
+}
+
+.alert-success {
+    height: 50px;
+    margin-top: 16px;
+    line-height: 30px;
+    background-color: #d4edda;
+    color: #155724;
+    border-color: #c3e6cb;
+}
+
+.alert-danger {
+    background-color: #f8d7da;
+    color: #721c24;
+    border-color: #f5c6cb;
+}
+
+.login-container {
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    width: 100%;
+    max-width: 600px;
+    margin-top: 70px;
+}
+
+.title {
+    font-size: 2rem;
     color: #333;
-}
-.form-style .text{
-    margin-bottom: 10px;
-}
-.form-style .subtext{
-    font-size: smaller;
+    margin-bottom: 2rem;
 }
 
-@media (max-width: 576px) {
-    .form-style form{
-        padding: 50px 20px;
-    }
-
-    .form-style .form-icon{
-        width: 70px;
-        height: 70px;
-        font-size: 30px;
-        line-height: 70px;
-    }
+.form-group {
+    margin-bottom: 1.5rem;
 }
+
+.form-control {
+    border-radius: 20px;
+    height: 45px;
+    font-size: 1rem;
+}
+
+.btn {
+    border-radius: 20px;
+    padding: 0.5rem;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+    transition: background-color 0.3s;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #004085;
+}
+
+p {
+    margin-top: 1rem;
+    font-size: 0.9rem;
+}
+
+p a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+p a:hover {
+    text-decoration: underline;
+}
+
+
