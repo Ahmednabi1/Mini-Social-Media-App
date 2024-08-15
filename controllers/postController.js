@@ -1,5 +1,3 @@
-// postController.js
-
 const Post = require('../models/post');
 const User = require('../models/user'); 
 const Comment = require('../models/comment');
@@ -29,7 +27,7 @@ exports.createPost = async (req, res) => {
 
 exports.addComment = async (req, res) => {
     const userId = req.session.userId;
-    const { content } = req.body; 
+    const { content } = req.body;
     const postId = req.params.id;
 
     if (!userId) {
@@ -49,13 +47,27 @@ exports.addComment = async (req, res) => {
             PostId: postId
         });
 
-        res.redirect(`/posts/${postId}`);
+        const currentPage = parseInt(req.query.page) || 1;
+        let commentPage = parseInt(req.query.commentPage) || 1;
+
+        const totalComments = await Comment.count({ where: { PostId: postId } });
+        const commentsPerPage = 3;
+
+        const totalCommentPages = Math.ceil(totalComments / commentsPerPage);
+
+        if (commentPage > totalCommentPages) {
+            commentPage = totalCommentPages;
+        }
+
+        res.redirect(`/posts?page=${currentPage}&commentPage=${commentPage}`);
     } catch (error) {
         console.error('Error adding comment:', error);
         req.flash('error_msg', 'An error occurred while adding the comment.');
         res.status(500).send('Internal Server Error');
     }
 };
+
+
 
 exports.getPosts = async (req, res) => {
     const postsPerPage = 5;
@@ -94,12 +106,14 @@ exports.getPosts = async (req, res) => {
             totalPages,
             currentCommentPage: commentPage,
             commentPages,
+            commentsPerPage
         });
     } catch (error) {
         console.error('Error fetching posts:', error);
         res.status(500).send('Server error');
     }
 };
+
 
 exports.getPostDetails = async (req, res) => {
     const postId = req.params.id;

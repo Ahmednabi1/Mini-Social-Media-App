@@ -129,3 +129,26 @@ body {
     background-color: #218838;
     border-color: #1e7e34;
 }
+textarea.form-control {
+    background-color: #f8f9fa;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.075);
+    padding: 0.75rem 1.25rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+textarea.form-control:focus {
+    border-color: #80bdff;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.25);
+}
+
+textarea::placeholder {
+    color: #6c757d;
+    opacity: 1;
+}
+
+textarea.form-control.mb-4 {
+    margin-bottom: 1rem;
+}
