@@ -52,8 +52,6 @@ router.post('/login', async (req, res) => {
     }
 
     req.session.userId = user.id;
-    // res.redirect('/profile');
-    // res.redirect('/posts');
     res.redirect('/dashboard');
 
 }); 

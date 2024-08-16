@@ -8,48 +8,49 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark">
-        <a class="navbar-brand" href="#">MySocialApp</a>
+        <a class="navbar-brand" href="/dashboard">Social App</a>
         <div class="collapse navbar-collapse">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="/profile">Profile</a>
+                    <a class="nav-link" href="/profile"><i class="fas fa-user"></i> Profile</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/posts">Timeline</a>
+                    <a class="nav-link" href="/posts"><i class="fas fa-home"></i> Timeline</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/my-posts">My Posts</a>
+                    <a class="nav-link" href="/my-posts"><i class="fas fa-file-alt"></i> My Posts</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/my-comments">My Comments</a>
+                    <a class="nav-link" href="/my-comments"><i class="fas fa-comments"></i> My Comments</a>
                 </li>
             </ul>
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="/auth/logout">Logout</a>
+                    <a class="nav-link" href="/auth/logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
                 </li>
             </ul>
         </div>
     </nav>
 
     <div class="container">
-        <h1 class="text-center mb-4">My Comments</h1>
+        <h1 class="text-center text-light mb-4">My Comments</h1>
         <div class="row">
             <% comments.forEach(comment => { %>
             <div class="col-md-8 mx-auto mb-4">
-                <div class="card">
+                <div class="card shadow">
                     <div class="card-body">
-                        <h4 class="mb-4">Comment on: <%= comment.Post.title %></h4>
+                        <!-- <h4 class="mb-4">Comment on: <%= comment.Post.title %></h4> -->
                         <p><%= comment.content %></p>
                         <small>Commented on: <%= comment.createdAt %></small>
                         <div class="mt-4">
-                            <a href="/my-comments/<%= comment.id %>/edit" class="btn btn-warning">Edit</a>
+                            <a href="/my-comments/<%= comment.id %>/edit" class="btn btn-warning"><i class="fas fa-edit"></i> Edit</a>
                             <form action="/my-comments/<%= comment.id %>/delete" method="POST" style="display:inline;">
-                                <button type="submit" class="btn btn-danger">Delete</button>
+                                <button type="submit" class="btn btn-danger"><i class="fas fa-trash"></i> Delete</button>
                             </form>
                         </div>
                     </div>

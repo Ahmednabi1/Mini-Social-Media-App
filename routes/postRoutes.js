@@ -9,8 +9,6 @@ router.get('/posts/new', authMiddleware, (req, res) => {
 
 router.post('/posts', authMiddleware, postController.createPost);
 
-router.get('/posts/:id', postController.getPostDetails);  //will be deleted
-
 router.post('/posts/:id/comments', postController.addComment);
 
 router.get('/posts', postController.getPosts);

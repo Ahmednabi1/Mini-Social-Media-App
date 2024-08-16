@@ -6,7 +6,7 @@ const Comment = require('./comment');
 const Post = sequelize.define('Post', {
     title: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: true
     },
     content: {
         type: DataTypes.TEXT,
